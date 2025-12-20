@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Practica 1 backend - VIU</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        Practica 1 backend - VIU
+    </header>
+
+    <div class="container">
+        <nav>
+            <button onclick="loadView('./views/series/list.php')" disabled="true">Series</button>
+            <button onclick="loadView('./views/platforms/list.php')">Plataformas</button>
+            <button onclick="loadView('./views/languages/list.php')">Idiomas</button>
+            <button onclick="loadView('./views/actors/list.php')">Actores</button>
+            <button onclick="loadView('./views/directors/list.php')">Directores</button>
+        </nav>
+
+        <main>
+            <iframe id="content" src="./views/series/list.php"></iframe>
+        </main>
+    </div>
+
+    <script>
+        function loadView(pagina) {
+            document.getElementById('content').src = pagina;
+            //Disable button selected
+            let buttons = document.querySelectorAll('nav button');
+            buttons.forEach(button => {
+                button.disabled = false;
+            });
+            event.target.disabled = true;
+        }
+    </script>
+
+</body>
+
+</html>
