@@ -47,18 +47,11 @@ class Actor extends Template
     }
     public function setBirthDate(string $birthDate, bool $updateInDB = true): string
     {
-        $parsedBirthDate = false;
-        $d = DateTime::createFromFormat('d/m/Y', $birthDate);
-        if ($d) {
-            $parsedBirthDate = $birthDate;
-        }
         $d = DateTime::createFromFormat('Y-m-d', $birthDate);
-        if ($d) {
-            $parsedBirthDate = $d->format('d/m/Y');
+        if (!$d || $d->format('Y-m-d')!=$birthDate) {
+            return "Fecha inválida. Debe tener formato dd/mm/yyyy.";
         }
-        if(!$parsedBirthDate) return "Fecha inválida. Debe tener formato dd/mm/yyyy.";
-
-        $this->birthDate = $parsedBirthDate;
+        $this->birthDate = $birthDate;
         if(!$updateInDB) return "OK";
         return updateActor() ? "OK" : "Error al actualizar la fecha de nacimiento.";
     }
@@ -107,14 +100,12 @@ class Actor extends Template
 
     private function updateActor(): bool
     {
-        $date = DateTime::createFromFormat('d/m/Y', $this->birthDate);
-        return parent::update("SET name = '{$this->name}', surnames = '{$this->surnames}', birthDate = '{$date->format('Y-m-d')}', nationality = '{$this->nationality}'");
+        return parent::update("SET name = '{$this->name}', surnames = '{$this->surnames}', birthDate = '{$this->birthDate}', nationality = '{$this->nationality}'");
     }
 
     private function insertActor(): bool
     {
-        $date = DateTime::createFromFormat('d/m/Y', $this->birthDate);
-        return parent::insert("(name, surnames, birthDate, nationality) VALUES ('{$this->name}','{$this->surnames}','{$date->format('Y-m-d')}','{$this->nationality}' )");
+        return parent::insert("(name, surnames, birthDate, nationality) VALUES ('{$this->name}','{$this->surnames}','{$this->birthDate}','{$this->nationality}' )");
     }
 
     //Ampliar constructor con variables y métodos específicos de Actor
