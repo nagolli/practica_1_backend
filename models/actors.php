@@ -1,4 +1,5 @@
 <?php
+require_once("../../models/template.php");
 
 class Actor extends Template
 {
@@ -23,44 +24,63 @@ class Actor extends Template
         if (trim($name) === '') {
             return "El nombre no puede estar vacío.";
         }
+        $maxLength = 64; 
+        if(strlen($name) > $maxLength) {
+            return "El nombre no puede tener más de ".$maxLength." caracteres.";
+        }
         $this->name = $name;
         if(!$updateInDB) return "OK";
-        return update() ? "OK" : "Error al actualizar el nombre.";
+        return updateActor() ? "OK" : "Error al actualizar el nombre.";
     }
-    public function setSurnames(string $surnames): string
+    public function setSurnames(string $surnames, bool $updateInDB = true): string
     {
         if (trim($surnames) === '') {
             return "Los apellidos no pueden estar vacíos.";
         }
+        $maxLength = 64; 
+        if(strlen($surnames) > $maxLength) {
+            return "Los apellidos no pueden tener más de ".$maxLength." caracteres.";
+        }
         $this->surnames = $surnames;
         if(!$updateInDB) return "OK";
-        return update() ? "OK" : "Error al actualizar los apellidos.";
+        return updateActor() ? "OK" : "Error al actualizar los apellidos.";
     }
-    public function setBirthDate(string $birthDate): string
+    public function setBirthDate(string $birthDate, bool $updateInDB = true): string
     {
+        $parsedBirthDate = false;
         $d = DateTime::createFromFormat('d/m/Y', $birthDate);
-        if (!$d || $d->format('d/m/Y') !== $birthDate) {
-            return "Fecha inválida. Debe tener formato dd/mm/yyyy.";
+        if ($d) {
+            $parsedBirthDate = $birthDate;
         }
-        $this->birthDate = $birthDate;
+        $d = DateTime::createFromFormat('Y-m-d', $birthDate);
+        if ($d) {
+            $parsedBirthDate = $d->format('d/m/Y');
+        }
+        if(!$parsedBirthDate) return "Fecha inválida. Debe tener formato dd/mm/yyyy.";
+
+        $this->birthDate = $parsedBirthDate;
         if(!$updateInDB) return "OK";
-        return update() ? "OK" : "Error al actualizar la fecha de nacimiento.";
+        return updateActor() ? "OK" : "Error al actualizar la fecha de nacimiento.";
     }
-    public function setNationality(string $nationality): string
+    public function setNationality(string $nationality, bool $updateInDB = true): string
     {
         if (trim($nationality) === '') {
             return "La nacionalidad no puede estar vacía.";
         }
+        $maxLength = 64;
+        if(strlen($nationality) > $maxLength) {
+            return "La nacionalidad no puede tener más de ".$maxLength." caracteres.";
+        }
         $this->nationality = $nationality;
         if(!$updateInDB) return "OK";
-        return update() ? "OK" : "Error al actualizar la nacionalidad.";
+        return updateActor() ? "OK" : "Error al actualizar la nacionalidad.";
     }
     public function set(string $name, string $surnames, string $birthDate, string $nationality): string
     {
         $originalName = $this->name;
-        $originalSurnames = $this->surnames;
-        $originalBirthDate = $this->birthDate;
-        $originalNationality = $this->nationality;
+        $originalSurnames = $this->surnames ?? '';
+        $originalBirthDate = $this->birthDate ?? '';
+        $originalNationality = $this->nationality ?? '';
 
         $nameResult = $this->setName($name, false);
         $surnameResult = $this->setSurnames($surnames, false);
@@ -74,48 +94,49 @@ class Actor extends Template
             $this->nationality = $originalNationality;
             return $nameResult !== "OK" ? $nameResult : ($surnameResult !== "OK" ? $surnameResult : ($birthDateResult !== "OK" ? $birthDateResult : $nationalityResult));
         }
-        return update() ? "OK" : "Error al actualizar el actor.";
+        if ($this->id == 0) {
+            return $this->insertActor() ? "OK" : "Error al crear el actor.";
+        }
+        return $this->updateActor() ? "OK" : "Error al actualizar el actor.";
     }
     
-    public function __construct(int $id, string $name, string $surnames, string $birthDate, string $nationality, bool $insertInBBDD = true)
+    public function __construct(int $id, string $name)
     {
         parent::__construct("actors", $id, $name);
-
-        //Asignar variables
-        $this->surnames = $surnames;
-        $this->birthDate = $birthDate;
-        $this->nationality = $nationality;
-        $date = DateTime::createFromFormat('Y-m-d', $birthDate);
-        if($insertInBBDD)
-            $this->insert("(id, name, surnames, birthDate, nationality) VALUES ({$id}, '{$name}', '{$surnames}', '{$date}', '{$nationality}')");
     }
 
-    public function update(string $name = $this->name, string $surnames = $this->surnames, string $birthDate = $this->birthDate, string $nationality = $this->nationality): bool
+    private function updateActor(): bool
     {
-        $this->name = $name;
-        $this->surnames = $surnames;
-        $this->birthDate = $birthDate;
-        $this->nationality = $nationality;
-        $date = DateTime::createFromFormat('Y-m-d', $birthDate);
-        return parent::update("SET name = '{$name}', surnames = '{$surnames}', birthDate = '{$date}', nationality = '{$nationality}'");
+        $date = DateTime::createFromFormat('d/m/Y', $this->birthDate);
+        return parent::update("SET name = '{$this->name}', surnames = '{$this->surnames}', birthDate = '{$date->format('Y-m-d')}', nationality = '{$this->nationality}'");
+    }
+
+    private function insertActor(): bool
+    {
+        $date = DateTime::createFromFormat('d/m/Y', $this->birthDate);
+        return parent::insert("(name, surnames, birthDate, nationality) VALUES ('{$this->name}','{$this->surnames}','{$date->format('Y-m-d')}','{$this->nationality}' )");
     }
 
     //Ampliar constructor con variables y métodos específicos de Actor
-    public static function get(int $id): Actor | null
+    public static function getActor(int $id): Actor | null
     {
-        $data = Template::get("actors", $id);
+        $data = Template::get($id, "actors");
         if ($data === null) {
             return null;
         }
-        return new Actor($data['id'], $data['name'], $data['surnames'], Template::dateForClient($data['birthDate']), $data['nationality'], false);
+        $item=new Actor($data['id'], $data['name'], $data['surnames'], $data['birthDate']->format('d/m/Y'), $data['nationality']);
+        $item->setSurnames($data['surnames'], false);
+        $item->setBirthDate($data['birthDate'], false);
+        $item->setNationality($data['nationality'], false);
+        return $item;
     }
 
-    public static function getAll(): array
+    public static function getAllActors(): array
     {
-        return Template::getAll("actors");
+        return Template::getAll("actors", "name, surnames");
     }
 
-    public static function delete(int $id): bool
+    public static function deleteActor(int $id): bool
     {
         return Template::delete("actors", $id);
     }

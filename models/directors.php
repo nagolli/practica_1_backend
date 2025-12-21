@@ -23,14 +23,13 @@ class Director extends Template
     }
 
     //Ampliar con variables y métodos específicos de Director
-    public function update(string $name): bool
+    public function update(): bool
     {
-        $this->name = $name;
-        return $this->update("SET name = '{$name}'");
+        return $this->update("SET name = '{$this->name}'");
     }
 
     //Ampliar constructor con variables y métodos específicos de Director
-    public static function get(int $id): Director | null
+    public static function getDirector(int $id): Director | null
     {
         $data = Template::get("directors", $id);
         if ($data === null) {
@@ -39,12 +38,12 @@ class Director extends Template
         return new Director($data['id'], $data['name'], false);
     }
     
-    public static function getAll(): array
+    public static function getAllDirectors(): array
     {
         return Template::getAll("directors");
     }
 
-    public static function delete(int $id): bool
+    public static function deleteDirector(int $id): bool
     {
         return Template::delete("directors", $id);
     }

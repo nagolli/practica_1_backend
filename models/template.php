@@ -25,7 +25,7 @@ class Template
         $this->table = $table;
     }
 
-    protected static function initConnectionDb(): void
+    protected static function initConnectionDb(): mysqli
     {
         if (self::$dbConnection === null) {
             $db_host = 'localhost';
@@ -72,13 +72,13 @@ class Template
     }
 
     /**
-     * Obtiene todos los registros (solo id y name)
+     * Obtiene todos los registros (solo id y name). Se pueden especificar columnas adicionales
      */
-    protected static  function getAll(string $table): array
+    protected static function getAll(string $table, string $columns = "name"): array
     {
         self::initConnectionDb();
 
-        $sql = "SELECT id, name FROM {$table}";
+        $sql = "SELECT id, {$columns} FROM {$table}";
         $query = self::$dbConnection->query($sql);
 
         if (!$query) {
@@ -96,10 +96,5 @@ class Template
         $sql = "DELETE FROM {$table} WHERE id = {$id}";
         $result = self::$dbConnection->query($sql);
         return $result !== false;
-    }
-
-    public static function dateForClient(DateTime $date): string
-    {
-        return $date->format('d/m/Y');
     }
 }
