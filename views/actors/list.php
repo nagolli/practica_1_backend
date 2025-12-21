@@ -10,7 +10,7 @@ $column = "Nombre";
 $data = $actors;
 $urlNew = "create.php";
 $urlEdit = "editarActor.php";
-$urlErase = "borrarActor.php";
+$urlErase = "../../controllers/actor/actor.php?action=delete";
 
 // Cargar la vista genérica
 include "../templateList.php";

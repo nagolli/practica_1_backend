@@ -10,6 +10,11 @@
 
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+    function confirmDelete() {
+        return confirm("¿Seguro que quieres borrar este registro?");
+    }
+</script>
 </head>
 <body class="bg-light">
 
@@ -38,7 +43,10 @@
                         <a href="<?= $urlEdit ?>?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
                     </td>
                     <td>
-                        <a href="<?= $urlErase ?>?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm">Borrar</a>
+                        <form action="<?= $urlErase ?>" method="POST" onsubmit="return confirmDelete()">
+                            <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                            <button type="submit" id=<?= $row['id'] ?>" class="btn btn-danger btn-sm">Borrar</a>
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>

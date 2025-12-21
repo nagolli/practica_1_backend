@@ -21,8 +21,8 @@
         return $return;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    print_r($_POST);
     $action = $_GET['action'] ?? null;
     switch ($action) {
         case "create":
@@ -36,5 +36,11 @@
             } else {
                 header("Location: ../../views/actors/create.php?error=" . urlencode($result));
             }
+            break;
+        case "delete":
+            $id = $_POST['id'] ?? '';
+            Actor::deleteActor($id);
+            header("Location: ../../views/actors/list.php");
+            break;
     }
 }
