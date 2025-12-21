@@ -31,7 +31,7 @@ class Platform extends Template
         if ($this->id == 0) {
             return $this->insertPlatform() ? "OK" : "Error al crear la plataforma.";
         }
-        return $this->insertPlatform() ? "OK" : "Error al actualizar la plataforma.";
+        return $this->updatePlatform() ? "OK" : "Error al actualizar la plataforma.";
     }
 
     public function __construct(int $id, string $name)
