@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($action) {
         case "create":
             $name = $_POST['name'] ?? '';
-            $result = createPlatform($name, $surnames, $birthDate, $nationality);
+            $result = createPlatform($name);
             if ($result === "OK") {
                 header("Location: ../../views/platforms/list.php");
             } else {

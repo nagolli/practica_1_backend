@@ -1,5 +1,5 @@
 <?php
-require_once("../../controllers/actor.php");
+require_once("../../controllers/actor/actor.php");
 // Parámetros para la vista genérica
 $title = "Nuevo Actor";
 $create = true;
@@ -34,7 +34,7 @@ $data = [
     ]
 ];
 $urlCancel = "list.php";
-$urlSubmit = "../../controllers/actor.php?action=create";
+$urlSubmit = "../../controllers/actor/actor.php?action=create";
 
 if (isset($_GET['error'])): ?>
     <div class="alert alert-danger">

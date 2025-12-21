@@ -1,5 +1,5 @@
 <?php
-require_once("../../controllers/platform.php");
+require_once("../../controllers/platform/platform.php");
 
 $info = getPlatform($_POST['id']);
 $title = "Editar Plataforma";
@@ -14,7 +14,7 @@ $data = [
     ]
 ];
 $urlCancel = "list.php";
-$urlSubmit = "../../controllers/platform.php?action=update";
+$urlSubmit = "../../controllers/platform/platform.php?action=update";
 
 if (isset($_GET['error'])): ?>
     <div class="alert alert-danger">

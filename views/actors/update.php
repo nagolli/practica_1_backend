@@ -1,5 +1,5 @@
 <?php
-require_once("../../controllers/actor.php");
+require_once("../../controllers/actor/actor.php");
 // Parámetros para la vista genérica
 
 $info = getActor($_POST['id']);
@@ -36,7 +36,7 @@ $data = [
     ]
 ];
 $urlCancel = "list.php";
-$urlSubmit = "../../controllers/actor.php?action=update";
+$urlSubmit = "../../controllers/actor/actor.php?action=update";
 
 if (isset($_GET['error'])): ?>
     <div class="alert alert-danger">

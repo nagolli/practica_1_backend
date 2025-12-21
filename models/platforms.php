@@ -18,6 +18,22 @@ class Platform extends Template
         return updatePlatform() ? "OK" : "Error al actualizar el nombre.";
     }
     
+    public function set(string $name): string
+    {
+        $originalName = $this->name;
+        
+        $nameResult = $this->setName($name, false);
+
+        if($nameResult !== "OK") {
+            $this->name = $originalName;
+            return $nameResult;
+        }
+        if ($this->id == 0) {
+            return $this->insertPlatform() ? "OK" : "Error al crear la plataforma.";
+        }
+        return $this->insertPlatform() ? "OK" : "Error al actualizar la plataforma.";
+    }
+
     public function __construct(int $id, string $name)
     {
         parent::__construct("platforms", $id, $name);

@@ -1,5 +1,5 @@
 <?php
-require_once("../../controllers/platform.php");
+require_once("../../controllers/platform/platform.php");
 $platforms = getAllPlatforms();
 
 // Parámetros para la vista genérica
@@ -8,7 +8,7 @@ $column = "Nombre";
 $data = $platforms;
 $urlNew = "create.php";
 $urlEdit = "update.php";
-$urlErase = "../../controllers/platform.php?action=delete";
+$urlErase = "../../controllers/platform/platform.php?action=delete";
 
 // Cargar la vista genérica
 include "../templateList.php";

@@ -1,5 +1,5 @@
 <?php
-print_r(__DIR__)
+
     require_once("../../models/actors.php");
 
     function getActor($id): array {

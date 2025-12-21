@@ -1,5 +1,5 @@
 <?php
-require_once("../../controllers/platform.php");
+require_once("../../controllers/platform/platform.php");
 // Parámetros para la vista genérica
 $title = "Nueva Plataforma";
 $create = true;
@@ -13,7 +13,7 @@ $data = [
     ]
 ];
 $urlCancel = "list.php";
-$urlSubmit = "../../controllers/platform.php?action=create";
+$urlSubmit = "../../controllers/platform/platform.php?action=create";
 
 if (isset($_GET['error'])): ?>
     <div class="alert alert-danger">
