@@ -38,9 +38,12 @@
             <?php foreach ($data as $row): ?>
                 <tr>
                     <td><?= $row["id"] ?></td>
-                    <td><?= $row["nombre"] ?></td>
+                    <td><?= $row["name"] ?></td>
                     <td>
-                        <a href="<?= $urlEdit ?>?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="<?= $urlEdit ?>" method="POST">
+                            <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                            <button type="submit" id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                        </form>
                     </td>
                     <td>
                         <form action="<?= $urlErase ?>" method="POST" onsubmit="return confirmDelete()">

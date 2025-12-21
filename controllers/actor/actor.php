@@ -1,6 +1,17 @@
 <?php
     require_once("../../models/actors.php");
 
+    function getActor($id): array {
+        $actor = Actor::getActor($id);
+        return [
+            "id" => $actor->getId(),
+            "name" => $actor->getName(),
+            "surnames" => $actor->getSurnames(),
+            "birthDate" => $actor->getBirthDate(),
+            "nationality" => $actor->getNationality(),
+        ];
+    }
+
     function getAllActors(): array {
         $data = Actor::getAllActors();
         //Devuelve array de arrays asociativos con id, nombre y apellidos
@@ -9,7 +20,7 @@
         foreach($data as $actor) {
             $result[] = [
                 "id" => $actor['id'],
-                "nombre" => $actor['name'] . ' ' . $actor['surnames']
+                "name" => $actor['name'] . ' ' . $actor['surnames']
             ];
         }
         return $result;
@@ -22,7 +33,6 @@
     }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    print_r($_POST);
     $action = $_GET['action'] ?? null;
     switch ($action) {
         case "create":

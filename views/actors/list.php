@@ -9,7 +9,7 @@ $title = "Listado de Actores";
 $column = "Nombre";
 $data = $actors;
 $urlNew = "create.php";
-$urlEdit = "editarActor.php";
+$urlEdit = "update.php";
 $urlErase = "../../controllers/actor/actor.php?action=delete";
 
 // Cargar la vista genérica

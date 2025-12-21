@@ -120,11 +120,11 @@ class Actor extends Template
     //Ampliar constructor con variables y métodos específicos de Actor
     public static function getActor(int $id): Actor | null
     {
-        $data = Template::get($id, "actors");
+        $data = Template::get("actors",$id);
         if ($data === null) {
             return null;
         }
-        $item=new Actor($data['id'], $data['name'], $data['surnames'], $data['birthDate']->format('d/m/Y'), $data['nationality']);
+        $item=new Actor($data['id'], $data['name']);
         $item->setSurnames($data['surnames'], false);
         $item->setBirthDate($data['birthDate'], false);
         $item->setNationality($data['nationality'], false);
