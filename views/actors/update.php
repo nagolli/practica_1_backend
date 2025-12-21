@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../controllers/actor/actor.php");
+require_once("../../controllers/actor.php");
 // Datos simulados (normalmente vendrían de la BD)
 // Parámetros para la vista genérica
 
@@ -38,7 +38,7 @@ $data = [
     ]
 ];
 $urlCancel = "list.php";
-$urlSubmit = "../../controllers/actor/actor.php?action=update";
+$urlSubmit = "../../controllers/actor.php?action=update";
 
 if (isset($_GET['error'])): ?>
     <div class="alert alert-danger">

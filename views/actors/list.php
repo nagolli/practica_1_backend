@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../controllers/actor/actor.php");
+require_once("../../controllers/actor.php");
 // Datos simulados (normalmente vendrían de la BD)
 $actors = getAllActors();
 
@@ -10,7 +10,7 @@ $column = "Nombre";
 $data = $actors;
 $urlNew = "create.php";
 $urlEdit = "update.php";
-$urlErase = "../../controllers/actor/actor.php?action=delete";
+$urlErase = "../../controllers/actor.php?action=delete";
 
 // Cargar la vista genérica
 include "../templateList.php";
