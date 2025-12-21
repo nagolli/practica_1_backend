@@ -1,4 +1,5 @@
 <?php
+require_once("../../models/template.php");
 
 class Language extends Template
 {
@@ -12,40 +13,40 @@ class Language extends Template
     //Seter general con validacion
 
     
-    //Ampliar con variables específicas de Language
-    public function __construct(int $id, string $name, bool $insertInBBDD = true)
+    public function __construct(int $id, string $name)
     {
         parent::__construct("languages", $id, $name);
-
-        //Asignar variables
-
-        if($insertInBBDD)
-            $this->insert("(id, name) VALUES ({$id}, '{$name}')");
     }
 
     //Ampliar con variables y métodos específicos de Language
-    public function update(string $name): bool
+    public function updateLanguage(): bool
+    {
+        return $this->update("SET name = '{$this->name}'");
+    }
+
+    public function insertLanguage(string $name): bool
     {
         $this->name = $name;
-        return $this->update("SET name = '{$name}'");
+        return $this-insert("(name) VALUES ('{$this->name}')");
     }
 
     //Ampliar constructor con variables y métodos específicos de Language
-    public static function get(int $id): Language | null
+    public static function getLanguage(int $id): Language | null
     {
         $data = Template::get("languages", $id);
         if ($data === null) {
             return null;
         }
-        return new Language($data['id'], $data['name'], false);
+        $item=new Language($data['id'], $data['name']);
+        return $item;
     }
     
-    public static function getAll(): array
+    public static function getAllLanguage(): array
     {
         return Template::getAll("languages");
     }
 
-    public static function delete(int $id): bool
+    public static function deleteLanguage(int $id): bool
     {
         return Template::delete("languages", $id);
     }

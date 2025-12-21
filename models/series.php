@@ -1,6 +1,7 @@
 <?php
+require_once("../../models/template.php");
 
-class Serie extends Template
+class Series extends Template
 {
 
     //Variables específicas de Serie
@@ -12,40 +13,39 @@ class Serie extends Template
     //Seter general con validacion
 
     
-    //Ampliar con variables específicas de Serie
-    public function __construct(int $id, string $name, bool $insertInBBDD = true)
+    public function __construct(int $id, string $name)
     {
         parent::__construct("series", $id, $name);
-
-        //Asignar variables
-
-        if($insertInBBDD)
-            $this->insert("(id, name) VALUES ({$id}, '{$name}')");
     }
 
     //Ampliar con variables y métodos específicos de Serie
-    public function update(string $name): bool
+    private function updateSeries(): bool
     {
-        $this->name = $name;
-        return $this->update("SET name = '{$name}'");
+        return $this->update("SET name = '{$this->name}'");
+    }
+
+    private function insertSeries(): bool
+    {
+        return parent::insert("(name) VALUES ('{$this->name}')");
     }
 
     //Ampliar constructor con variables y métodos específicos de Serie
-    public static function get(int $id): Serie | null
+    public static function getSeries(int $id): Series | null
     {
         $data = Template::get("series", $id);
         if ($data === null) {
             return null;
         }
-        return new Serie($data['id'], $data['name'], false);
+        $item=new Series($data['id'], $data['name']);
+        return $item;
     }
     
-    public static function getAll(): array
+    public static function getAllSeries(): array
     {
         return Template::getAll("series");
     }
 
-    public static function delete(int $id): bool
+    public static function deleteSeries(int $id): bool
     {
         return Template::delete("series", $id);
     }

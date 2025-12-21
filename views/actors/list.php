@@ -1,5 +1,4 @@
 <?php
-
 require_once("../../controllers/actor.php");
 // Datos simulados (normalmente vendrían de la BD)
 $actors = getAllActors();

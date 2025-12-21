@@ -1,4 +1,5 @@
 <?php
+require_once("../../models/template.php");
 
 class Director extends Template
 {
@@ -12,14 +13,9 @@ class Director extends Template
     //Seter general con validacion
     
     //Ampliar con variables específicas de Director
-    public function __construct(int $id, string $name, bool $insertInBBDD = true)
+    public function __construct(int $id, string $name)
     {
         parent::__construct("directors", $id, $name);
-
-        //Asignar variables
-
-        if($insertInBBDD)
-            $this->insert("(id, name) VALUES ({$id}, '{$name}')");
     }
 
     //Ampliar con variables y métodos específicos de Director
@@ -35,7 +31,8 @@ class Director extends Template
         if ($data === null) {
             return null;
         }
-        return new Director($data['id'], $data['name'], false);
+        $item=new Director($data['id'], $data['name']);
+        return $item;
     }
     
     public static function getAllDirectors(): array

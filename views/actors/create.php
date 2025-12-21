@@ -1,7 +1,5 @@
 <?php
-
 require_once("../../controllers/actor.php");
-// Datos simulados (normalmente vendrían de la BD)
 // Parámetros para la vista genérica
 $title = "Nuevo Actor";
 $create = true;

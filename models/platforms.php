@@ -1,51 +1,55 @@
 <?php
+require_once("../../models/template.php");
 
 class Platform extends Template
 {
 
-    //Variables específicas de Platform
-
-    //Geters específicos de Platform
-
-    //Seters con validacion
-
-    //Seter general con validacion
-
+    public function setName(string $name, bool $updateInDB = true): string
+    {
+        if (trim($name) === '') {
+            return "El nombre no puede estar vacío.";
+        }
+        $maxLength = 64; 
+        if(strlen($name) > $maxLength) {
+            return "El nombre no puede tener más de ".$maxLength." caracteres.";
+        }
+        $this->name = $name;
+        if(!$updateInDB) return "OK";
+        return updatePlatform() ? "OK" : "Error al actualizar el nombre.";
+    }
     
-    //Ampliar con variables específicas de Platform
-    public function __construct(int $id, string $name, bool $insertInBBDD = true)
+    public function __construct(int $id, string $name)
     {
         parent::__construct("platforms", $id, $name);
-
-        //Asignar variables
-
-        if($insertInBBDD)
-            $this->insert("(id, name) VALUES ({$id}, '{$name}')");
     }
 
-    //Ampliar con variables y métodos específicos de Platform
-    public function update(string $name): bool
+    private function updatePlatform(): bool
     {
-        $this->name = $name;
-        return $this->update("SET name = '{$name}'");
+        return $this->update("SET name = '{$this->name}'");
+    }
+
+    private function insertPlatform(): bool
+    {
+        return parent::insert("(name) VALUES ('{$this->name}')");
     }
 
     //Ampliar constructor con variables y métodos específicos de Platform
-    public static function get(int $id): Platform | null
+    public static function getPlatform(int $id): Platform | null
     {
         $data = Template::get("platforms", $id);
         if ($data === null) {
             return null;
         }
-        return new Platform($data['id'], $data['name'], false);
+        $item=new Platform($data['id'], $data['name']);
+        return $item;
     }
     
-    public static function getAll(): array
+    public static function getAllPlatforms(): array
     {
         return Template::getAll("platforms");
     }
 
-    public static function delete(int $id): bool
+    public static function deletePlatform(int $id): bool
     {
         return Template::delete("platforms", $id);
     }
