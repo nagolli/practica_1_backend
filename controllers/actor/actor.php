@@ -32,6 +32,12 @@
         return $return;
     }
 
+    function updateActor($id, $name, $surnames, $birthDate, $nationality): string { 
+        $actor = Actor::getActor($id);
+        $return = $actor->set($name, $surnames, $birthDate, $nationality);
+        return $return;
+    }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_GET['action'] ?? null;
     switch ($action) {
@@ -47,6 +53,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: ../../views/actors/create.php?error=" . urlencode($result));
             }
             break;
+        case "update":
+            $id = $_POST['id'] ?? '';
+            $name = $_POST['name'] ?? '';
+            $surnames = $_POST['surname'] ?? '';
+            $birthDate = $_POST['birthDate'] ?? '21-12-2025';
+            $nationality = $_POST['nationality'] ?? '';
+            $result = updateActor($id, $name, $surnames, $birthDate, $nationality);
+            if ($result === "OK") {
+                header("Location: ../../views/actors/list.php");
+            } else {
+                header("Location: ../../views/actors/update.php?error=" . urlencode($result));
+            }
+            break;
+
         case "delete":
             $id = $_POST['id'] ?? '';
             Actor::deleteActor($id);

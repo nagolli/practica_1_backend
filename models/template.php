@@ -40,7 +40,10 @@ class Template
             }
             self::$dbConnection = $mysqli;
             return $mysqli;
+        } else {
+            $mysqli = self::$dbConnection;
         }
+        return $mysqli;
     }
 
     protected function insert(string $sql): bool

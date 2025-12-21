@@ -1,6 +1,6 @@
 <?php
 // templateForm.php
-// Espera: $title, $create, $data, $urlCancel, $urlSubmit
+// Espera: $title, $create, $data, $urlCancel, $urlSubmit, $itemId
 //$data es un array de $title, $id, $type, $currValue, $values con values siendo vacio o un array de duplas id-texto
 //$type puede ser 'text', 'date', 'select'
 ?>
@@ -17,6 +17,7 @@
 
 <div class="container mt-5">
 <form action="<?= $urlSubmit ?>" method="POST">
+    <input type="hidden" name="id" value="<?= $_POST['id'] ?? 0 ?>">
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
             <tr>
@@ -31,8 +32,10 @@
                     <td>
                         <?php if ($value["type"] == "text"): ?>
                             <input type="text" id="<?= $value["id"] ?>" name="<?= $value["id"] ?>" value="<?= $create?null:$value["currValue"] ?>" class="form-control">
-                        <?php elseif ($value["type"] == "date"): ?>
-                            <input type="date" id="<?= $value["id"] ?>" name="<?= $value["id"] ?>" value="<?= $create?null:$value["currValue"] ?>" class="form-control">
+                        <?php elseif ($value["type"] == "date"):
+                            $date = DateTime::createFromFormat('d/m/Y', $value["currValue"])->format('Y-m-d'); 
+                            ?>
+                            <input type="date" id="<?= $value["id"] ?>" name="<?= $value["id"] ?>" value="<?= $create?null:$date ?>" class="form-control">
                         <?php elseif ($value["type"] == "select"): ?>
                             <select id="<?= $value["id"] ?>" name="<?= $value["id"] ?>" class="form-control">
                                 <option value="">Seleccionar</option>
