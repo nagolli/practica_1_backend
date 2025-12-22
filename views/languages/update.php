@@ -3,7 +3,18 @@
 require_once("../../controllers/language/language.php");
 // Parámetros para la vista genérica
 
-$info = getLanguage($_POST['id']);
+// Aceptar id por POST (desde lista) o por GET (tras redirección con error)
+$id = $_POST['id'] ?? $_GET['id'] ?? null;
+if ($id === null || $id === '') {
+    header("Location: list.php");
+    exit;
+}
+// Si venimos por GET, propagar el id a POST para que lo recoja el TemplateForm
+if (!isset($_POST['id']) && isset($_GET['id'])) {
+    $_POST['id'] = $_GET['id'];
+}
+
+$info = getLanguage($id);
 $title = "Editar Idioma";
 $create = false;
 $data = [

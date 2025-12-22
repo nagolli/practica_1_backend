@@ -5,7 +5,7 @@ class Template
     protected int $id;
     protected string $name;
     protected string $table;
-    private static $dbConnection = null;
+    protected static $dbConnection = null;
     
     public function getId(): int
     {

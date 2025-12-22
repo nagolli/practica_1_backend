@@ -19,7 +19,7 @@
         foreach($data as $language) {
             $result[] = [
                 "id" => $language['id'],
-                "name" => $language['name'] . ' ' . $language['iso_code']
+                "name" => $language['name'],
             ];
         }
         return $result;
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result === "OK") {
                 header("Location: ../../views/languages/list.php?success=" . urlencode("Se ha actualizado correctamente el idioma"));
             } else {
-                header("Location: ../../views/languages/update.php?error=" . urlencode($result));
+                header("Location: ../../views/languages/update.php?id=" . $id . "&error=" . urlencode($result));
             }
             break;
 

@@ -27,23 +27,27 @@ class Language extends Template
 
     public function setIsoCode(string $iso_code, bool $updateInDB = true): string
     {
-        if (trim($iso_code) === '') {
+        $iso_code = trim($iso_code);
+
+        if ($iso_code === '') {
             return "El código ISO no puede estar vacío.";
         }
-        $maxLength = 2; 
-        if(strlen($iso_code) > $maxLength) {
-            return "El código ISO no puede tener más de ".$maxLength." caracteres.";
+
+        if (strlen($iso_code) > 2) {
+            return "El código ISO no puede tener más de 2 caracteres.";
         }
-        foreach (self::getAllLanguage() as $language) {
-            $existingIso = $language['iso_code'] ?? '';
-            $existingId = $language['id'] ?? 0;
-            if ($existingIso == $iso_code && $existingId !== $this->id) {
-                return "Ya existe un idioma con ese código ISO.";
-            }
+
+        self::initConnectionDb();
+        $iso = self::$dbConnection->real_escape_string($iso_code);
+
+        $sql = "SELECT id FROM languages WHERE iso_code = '$iso' AND id != {$this->id} LIMIT 1";
+        if (self::$dbConnection->query($sql)->num_rows > 0) {
+            return "Ya existe un idioma con ese código ISO.";
         }
+
         $this->iso_code = $iso_code;
-        if(!$updateInDB) return "OK";
-        return $this->updateLanguage() ? "OK" : "Error al actualizar el código ISO.";
+
+        return !$updateInDB ? "OK" : ($this->updateLanguage() ? "OK" : "Error al actualizar el código ISO.");
     }
 
     public function set(string $name, string $iso_code): string
@@ -96,7 +100,8 @@ class Language extends Template
     
     public static function getAllLanguage(): array
     {
-        return Template::getAll("languages", "name, iso_code");
+        // Necesitamos incluir también el id para validar unicidad del ISO correctamente
+        return Template::getAll("languages", "id, name, iso_code");
     }
 
     public static function deleteLanguage(int $id): bool
