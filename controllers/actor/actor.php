@@ -28,7 +28,7 @@
     }
 
     function createActor($name, $surnames, $birthDate, $nationality): string { 
-        $actor = new Actor(0, $name, $surnames);
+        $actor = new Actor(0, $name);
         return $actor->set($name, $surnames, $birthDate, $nationality);
     }
 
