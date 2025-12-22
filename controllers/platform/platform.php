@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
             $result = createPlatform($name);
             if ($result === "OK") {
-                header("Location: ../../views/platforms/list.php");
+                header("Location: ../../views/platforms/list.php?success=" . urlencode("Se ha creado correctamente la plataforma"));
             } else {
                 header("Location: ../../views/platforms/create.php?error=" . urlencode($result));
             }
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
             $result = updatePlatform($id, $name);
             if ($result === "OK") {
-                header("Location: ../../views/platforms/list.php");
+                header("Location: ../../views/platforms/list.php?success=" . urlencode("Se ha actualizado correctamente la plataforma"));
             } else {
                 header("Location: ../../views/platforms/update.php?error=" . urlencode($result));
             }
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case "delete":
             $id = $_POST['id'] ?? '';
             Platform::deletePlatform($id);
-            header("Location: ../../views/platforms/list.php");
+            header("Location: ../../views/platforms/list.php?success=" . urlencode("Se ha eliminado correctamente la plataforma"));
             break;
     }
 }

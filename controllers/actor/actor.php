@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nationality = $_POST['nationality'] ?? '';
             $result = createActor($name, $surnames, $birthDate, $nationality);
             if ($result === "OK") {
-                header("Location: ../../views/actors/list.php");
+                header("Location: ../../views/actors/list.php?success=" . urlencode("Se ha creado correctamente el actor"));
             } else {
                 header("Location: ../../views/actors/create.php?error=" . urlencode($result));
             }
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nationality = $_POST['nationality'] ?? '';
             $result = updateActor($id, $name, $surnames, $birthDate, $nationality);
             if ($result === "OK") {
-                header("Location: ../../views/actors/list.php");
+                header("Location: ../../views/actors/list.php?success=" . urlencode("Se ha actualizado correctamente el actor"));
             } else {
                 header("Location: ../../views/actors/update.php?error=" . urlencode($result));
             }
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case "delete":
             $id = $_POST['id'] ?? '';
             Actor::deleteActor($id);
-            header("Location: ../../views/actors/list.php");
+            header("Location: ../../views/actors/list.php?success=" . urlencode("Se ha eliminado correctamente el actor"));
             break;
     }
 }

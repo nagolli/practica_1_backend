@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nationality = $_POST['nationality'] ?? '';
             $result = createDirector($name, $surnames, $birthDate, $nationality);
             if ($result === "OK") {
-                header("Location: ../../views/directors/list.php");
+                header("Location: ../../views/directors/list.php?success=" . urlencode("Se ha creado correctamente el director"));
             } else {
                 header("Location: ../../views/directors/create.php?error=" . urlencode($result));
             }
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nationality = $_POST['nationality'] ?? '';
             $result = updateDirector($id, $name, $surnames, $birthDate, $nationality);
             if ($result === "OK") {
-                header("Location: ../../views/directors/list.php");
+                header("Location: ../../views/directors/list.php?success=" . urlencode("Se ha actualizado correctamente el director"));
             } else {
                 header("Location: ../../views/directors/update.php?error=" . urlencode($result));
             }
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case "delete":
             $id = $_POST['id'] ?? '';
             Director::deleteDirector($id);
-            header("Location: ../../views/directors/list.php");
+            header("Location: ../../views/directors/list.php?success=" . urlencode("Se ha eliminado correctamente el director"));
             break;
     }
 }

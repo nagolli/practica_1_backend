@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $iso_code = $_POST['iso_code'] ?? '';
             $result = createLanguage($name, $iso_code);
             if ($result === "OK") {
-                header("Location: ../../views/languages/list.php");
+                header("Location: ../../views/languages/list.php?success=" . urlencode("Se ha creado correctamente el idioma"));
             } else {
                 header("Location: ../../views/languages/create.php?error=" . urlencode($result));
             }
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $iso_code = $_POST['iso_code'] ?? '';
             $result = updateLanguage($id, $name, $iso_code);
             if ($result === "OK") {
-                header("Location: ../../views/languages/list.php");
+                header("Location: ../../views/languages/list.php?success=" . urlencode("Se ha actualizado correctamente el idioma"));
             } else {
                 header("Location: ../../views/languages/update.php?error=" . urlencode($result));
             }
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case "delete":
             $id = $_POST['id'] ?? '';
             Language::deleteLanguage($id);
-            header("Location: ../../views/languages/list.php");
+            header("Location: ../../views/languages/list.php?success=" . urlencode("Se ha eliminado correctamente el idioma"));
             break;
     }
 }
