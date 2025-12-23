@@ -61,7 +61,7 @@ class Language extends Template
         if($nameResult !== "OK" || $isoCodeResult !== "OK") {
             $this->name = $originalName;
             $this->iso_code = $originalIsoCode;
-            return $nameResult !== "OK" ? $nameResult : ($isoCodeResult !== "OK" ? $isoCodeResult : "OK"); ;
+            return $nameResult !== "OK" ? $nameResult : ($isoCodeResult !== "OK" ? $isoCodeResult : "OK"); 
         }
         if ($this->id == 0) {
             return $this->insertLanguage() ? "OK" : "Error al crear el idioma.";

@@ -48,10 +48,16 @@ class Template
 
     protected function insert(string $sql): bool
     {
-        self::initConnectionDb();
-        $sql = "INSERT INTO {$this->table} {$sql}";
-        $result = self::$dbConnection->query($sql);
-        return $result !== false;
+        try {
+            self::initConnectionDb();
+            $sql = "INSERT INTO {$this->table} {$sql}";
+            $result = self::$dbConnection->query($sql);
+            return $result !== false;
+        } catch (mysqli_sql_exception $e) {
+            throw new Exception(
+                'Error al insertar en la base de datos: ' . $e->getMessage()
+            );
+        }            
     }
 
     protected function update(string $sql): bool
@@ -93,7 +99,7 @@ class Template
     /**
      * Elimina un registro por ID
      */
-    protected static  function delete(string $table, int $id): bool
+    protected static function delete(string $table, int $id): bool
     {
         self::initConnectionDb();
         $sql = "DELETE FROM {$table} WHERE id = {$id}";

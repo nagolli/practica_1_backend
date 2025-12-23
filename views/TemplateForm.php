@@ -18,6 +18,7 @@
 <div class="container mt-5">
 <form action="<?= $urlSubmit ?>" method="POST">
     <input type="hidden" name="id" value="<?= $_POST['id'] ?? 0 ?>">
+
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
             <tr>
@@ -37,8 +38,8 @@
                         <?php elseif ($value["type"] == "select"): ?>
                             <select id="<?= $value["id"] ?>" name="<?= $value["id"] ?>" class="form-control">
                                 <option value="">Seleccionar</option>
-                                <?php foreach ($value["values"] as $option): ?>
-                                    <option value="<?= $option['id'] ?>" <?= ($option['id'] == $value["currValue"]) ? 'selected' : '' ?>><?= $option['text'] ?></option>
+                                <?php foreach ($value["values"] as $option): ?>                                    
+                                    <option value="<?= $option['id'] ?>" <?= ($option['id'] == $value["currValue"]) ? 'selected' : '' ?>><?= $option['name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         <?php endif; ?>
