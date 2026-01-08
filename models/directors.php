@@ -8,7 +8,7 @@ class Director extends Template
     private string $birthDate;
     private string $nationality;
     
-     public function getSurnames(): string
+    public function getSurnames(): string
     {
         return $this->surnames;
     }

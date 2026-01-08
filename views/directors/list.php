@@ -1,7 +1,6 @@
 <?php
 
 require_once("../../controllers/director/director.php");
-// Datos simulados (normalmente vendrían de la BD)
 $directors = getAllDirectors();
 
 // Parámetros para la vista genérica

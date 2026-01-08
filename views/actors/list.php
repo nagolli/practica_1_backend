@@ -1,7 +1,6 @@
 <?php
 
 require_once("../../controllers/actor/actor.php");
-// Datos simulados (normalmente vendrían de la BD)
 $actors = getAllActors();
 
 // Parámetros para la vista genérica

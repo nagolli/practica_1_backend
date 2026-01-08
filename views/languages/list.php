@@ -1,7 +1,6 @@
 <?php
 
 require_once("../../controllers/language/language.php");
-// Datos simulados (normalmente vendrían de la BD)
 $languages = getAllLanguages();
 
 // Parámetros para la vista genérica
