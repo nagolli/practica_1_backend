@@ -2,6 +2,8 @@
 require_once("../../controllers/series/series.php");
 require_once("../../controllers/platform/platform.php");
 require_once("../../controllers/director/director.php");
+require_once("../../controllers/actor/actor.php");
+require_once("../../controllers/language/language.php");
 // Parámetros para la vista genérica
 
 // Aceptar id por POST (desde lista) o por GET (tras redirección con error)
@@ -20,6 +22,8 @@ $title = "Editar Serie";
 $create = false;
 $platforms = getAllPlatforms();
 $directors = getAllDirectors();
+$actors = getAllActors();
+$languages = getAllLanguages();
 $data = [
     [
         "title" => "Titulo",
@@ -29,18 +33,53 @@ $data = [
         "id" => "title"
     ],
     [
-        "title" => "IdPlatform",
+        "title" => "Plataforma",
         "type" => "select",
         "currValue" => $info["idPlatform"],
         "values" => $platforms,
         "id" => "idPlatform"
     ],
     [
-        "title" => "idDirector",
+        "title" => "Idioma original",
+        "type" => "select",
+        "currValue" => $info["idAudioLanguageOriginal"],
+        "values" => $languages,
+        "id" => "idLanguageOriginal"
+    ],
+    [
+        "title" => "Otros idiomas de audio",
+        "type" => "multiSelect",
+        "currValue" => $info["idAudioLanguages"],
+        "values" => $languages,
+        "id" => "idAudioLanguages"
+    ],
+    [
+        "title" => "Otros idiomas de subtitulos",
+        "type" => "multiSelect",
+        "currValue" => $info["idSubtitleLanguages"],
+        "values" => $languages,
+        "id" => "idSubtitleLanguages"
+    ],
+    [
+        "title" => "Director",
         "type" => "select",
         "currValue" => $info["idDirector"],
         "values" => $directors,
         "id" => "idDirector"
+    ],
+    [
+        "title" => "Protagonista",
+        "type" => "select",
+        "currValue" => $info["idActorProtagonist"],
+        "values" => $actors,
+        "id" => "idActorProtagonist"
+    ],
+    [
+        "title" => "Actores",
+        "type" => "multiSelect",
+        "currValue" => $info["idActors"],
+        "values" => $actors,
+        "id" => "idActors"
     ]
 ];
 $urlCancel = "list.php";

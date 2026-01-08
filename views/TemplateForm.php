@@ -38,8 +38,21 @@
                         <?php elseif ($value["type"] == "select"): ?>
                             <select id="<?= $value["id"] ?>" name="<?= $value["id"] ?>" class="form-control">
                                 <option value="">Seleccionar</option>
-                                <?php foreach ($value["values"] as $option): ?>                                    
+                                <?php foreach ($value["values"] as $option): ?>
                                     <option value="<?= $option['id'] ?>" <?= ($option['id'] == $value["currValue"]) ? 'selected' : '' ?>><?= $option['name'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php elseif ($value["type"] == "multiSelect"): ?>
+
+                            <select id="<?= $value["id"] ?>"name="<?= $value["id"] ?>[]" class="form-control" multiple>
+                                <?php
+                                $selectedValues = $create ? [] : (array) $value["currValue"];
+                                ?>
+                                <?php foreach ($value["values"] as $option): ?>
+                                    <option value="<?= $option['id'] ?>"
+                                        <?= in_array($option['id'], $selectedValues) ? 'selected' : '' ?>>
+                                        <?= $option['name'] ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         <?php endif; ?>

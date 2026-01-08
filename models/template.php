@@ -46,26 +46,74 @@ class Template
         return $mysqli;
     }
 
-    protected function insert(string $sql): bool
+    protected function insert(string $sql, array $extraQueries = []): bool
     {
         try {
             self::initConnectionDb();
+            self::$dbConnection->begin_transaction();
+
+            // INSERT principal
             $sql = "INSERT INTO {$this->table} {$sql}";
             $result = self::$dbConnection->query($sql);
-            return $result !== false;
-        } catch (mysqli_sql_exception $e) {
+
+            if ($result === false) {
+                throw new Exception('Error en INSERT principal');
+            }
+
+            // Ejecutar queries adicionales
+            foreach ($extraQueries as $extraSql) {
+                $extraResult = self::$dbConnection->query($extraSql);
+
+                if ($extraResult === false) {
+                    throw new Exception('Error en query adicional: ' . self::$dbConnection->error);
+                }
+            }
+
+            self::$dbConnection->commit();
+            return true;
+
+        } catch (Throwable $e) {
+            self::$dbConnection->rollback();
             throw new Exception(
                 'Error al insertar en la base de datos: ' . $e->getMessage()
             );
-        }            
+        }
     }
 
-    protected function update(string $sql): bool
+    protected function update(string $sql, array $extraQueries = []): bool
     {
-        self::initConnectionDb();
-        $sql = "UPDATE {$this->table} {$sql} WHERE id = {$this->id}";
-        $result = self::$dbConnection->query($sql);
-        return $result !== false;
+        try {
+            self::initConnectionDb();
+            self::$dbConnection->begin_transaction();
+
+            // UPDATE principal
+            $sql = "UPDATE {$this->table} {$sql} WHERE id = {$this->id}";
+            $result = self::$dbConnection->query($sql);
+
+            if ($result === false) {
+                throw new Exception('Error en UPDATE principal');
+            }
+
+            // Queries adicionales
+            foreach ($extraQueries as $extraSql) {
+                $extraResult = self::$dbConnection->query($extraSql);
+
+                if ($extraResult === false) {
+                    throw new Exception(
+                        'Error en query adicional: ' . self::$dbConnection->error
+                    );
+                }
+            }
+
+            self::$dbConnection->commit();
+            return true;
+
+        } catch (Throwable $e) {
+            self::$dbConnection->rollback();
+            throw new Exception(
+                'Error al actualizar en la base de datos: ' . $e->getMessage()
+            );
+        }
     }
 
     protected static function get(string $table, int $id): array|null
@@ -99,11 +147,39 @@ class Template
     /**
      * Elimina un registro por ID
      */
-    protected static function delete(string $table, int $id): bool
+    protected static function delete(string $table, int $id, array $extraQueries = []): bool
     {
-        self::initConnectionDb();
-        $sql = "DELETE FROM {$table} WHERE id = {$id}";
-        $result = self::$dbConnection->query($sql);
-        return $result !== false;
+        try {
+            self::initConnectionDb();
+            self::$dbConnection->begin_transaction();
+
+            // DELETE principal
+            $sql = "DELETE FROM {$table} WHERE id = {$id}";
+            $result = self::$dbConnection->query($sql);
+
+            if ($result === false) {
+                throw new Exception('Error en DELETE principal');
+            }
+
+            // Queries adicionales
+            foreach ($extraQueries as $extraSql) {
+                $extraResult = self::$dbConnection->query($extraSql);
+
+                if ($extraResult === false) {
+                    throw new Exception(
+                        'Error en query adicional: ' . self::$dbConnection->error
+                    );
+                }
+            }
+
+            self::$dbConnection->commit();
+            return true;
+
+        } catch (Throwable $e) {
+            self::$dbConnection->rollback();
+            throw new Exception(
+                'Error al eliminar de la base de datos: ' . $e->getMessage()
+            );
+        }
     }
 }

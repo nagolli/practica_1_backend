@@ -4,7 +4,7 @@ $series = getAllSeries();
 
 // Parámetros para la vista genérica
 $title = "Listado de Series";
-$column = "Titulo";
+$column = "Título";
 $data = $series;
 $urlNew = "create.php";
 $urlEdit = "update.php";
