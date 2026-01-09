@@ -272,7 +272,7 @@ class Series extends Template {
             $result[] = (int)$row[$columnToReturn];
         }
     return $result ?: null;
-}
+    }
 
     public static function getSeries(int $id): Series | null
     {
@@ -305,7 +305,7 @@ class Series extends Template {
         return Template::getAll("series", "title");
     }
 
-    public static function deleteSeries(int $id): bool
+    public static function deleteSeries(int $id): string
     {
         return Template::delete("series", $id,
         [
@@ -315,7 +315,7 @@ class Series extends Template {
         ]);
     }
 
-    public function updateSeries(): bool
+    public function updateSeries(): string
     {
         return parent::update(
             "SET title = '{$this->title}', idPlatform = '{$this->idPlatform}', idDirector = '{$this->idDirector}'",

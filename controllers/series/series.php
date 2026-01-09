@@ -88,8 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case "delete":
             $id = $_POST['id'] ?? '';
-            Series::deleteSeries($id);
-            header("Location: ../../views/series/list.php?success=" . urlencode("Se ha eliminado correctamente la serie"));
+            $result = Series::deleteSeries($id);
+            if ($result === "OK") {
+                header("Location: ../../views/series/list.php?success=" . urlencode("Se ha eliminado correctamente la serie"));
+            } else {
+                header("Location: ../../views/series/list.php?error=" . urlencode($result));
+            }
             break;
     }
 }

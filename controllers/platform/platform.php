@@ -48,8 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case "delete":
             $id = $_POST['id'] ?? '';
-            Platform::deletePlatform($id);
-            header("Location: ../../views/platforms/list.php?success=" . urlencode("Se ha eliminado correctamente la plataforma"));
+            $result = Platform::deletePlatform($id);
+            if ($result === "OK") {
+                header("Location: ../../views/platforms/list.php?success=" . urlencode("Se ha eliminado correctamente la plataforma"));
+            } else {
+                header("Location: ../../views/platforms/list.php?error=" . urlencode($result));
+            }
             break;
     }
 }

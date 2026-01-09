@@ -147,7 +147,7 @@ class Template
     /**
      * Elimina un registro por ID
      */
-    protected static function delete(string $table, int $id, array $extraQueries = []): bool
+    protected static function delete(string $table, int $id, array $extraQueries = []): string
     {
         try {
             self::initConnectionDb();
@@ -158,7 +158,7 @@ class Template
             $result = self::$dbConnection->query($sql);
 
             if ($result === false) {
-                throw new Exception('Error en DELETE principal');
+                return 'Error en DELETE principal';
             }
 
             // Queries adicionales
@@ -166,20 +166,17 @@ class Template
                 $extraResult = self::$dbConnection->query($extraSql);
 
                 if ($extraResult === false) {
-                    throw new Exception(
-                        'Error en query adicional: ' . self::$dbConnection->error
-                    );
+                    return 'Error en query adicional: ' . self::$dbConnection->error;
+
                 }
             }
 
             self::$dbConnection->commit();
-            return true;
+            return "OK";
 
         } catch (Throwable $e) {
             self::$dbConnection->rollback();
-            throw new Exception(
-                'Error al eliminar de la base de datos: ' . $e->getMessage()
-            );
+            return 'Error al eliminar de la base de datos: ' . $e->getMessage();
         }
     }
 }

@@ -104,8 +104,37 @@ class Language extends Template
         return Template::getAll("languages", "id, name, iso_code");
     }
 
-    public static function deleteLanguage(int $id): bool
+    private static function canDeleteLanguage(int $id): bool
     {
+        self::initConnectionDb();
+        $sql1 = "
+            SELECT count(*) AS total
+            FROM dub
+            WHERE idLanguage = {$id}
+        ";
+        $sql2 = "
+            SELECT count(*) AS total
+            FROM subtitle
+            WHERE idLanguage = {$id}
+        ";
+        $query1 = self::$dbConnection->query($sql1);
+        if (!$query1) {
+            return false;
+        }
+        $row1 = $query1->fetch_assoc();
+        $query2 = self::$dbConnection->query($sql2);
+        if (!$query2) {
+            return false;
+        }
+        $row2 = $query2->fetch_assoc();
+        return ((int)$row1['total'] === 0) && ((int)$row2['total'] === 0);
+    }
+
+    public static function deleteLanguage(int $id): string
+    {
+        if(!Language::canDeleteLanguage($id)) {
+            return "No se puede eliminar el idioma porque está asociado a una o más series.";
+        }
         return Template::delete("languages", $id);
     }
 }

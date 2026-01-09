@@ -68,8 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case "delete":
             $id = $_POST['id'] ?? '';
-            Director::deleteDirector($id);
-            header("Location: ../../views/directors/list.php?success=" . urlencode("Se ha eliminado correctamente el director"));
+            $result = Director::deleteDirector($id);
+            if ($result === "OK") {
+                header("Location: ../../views/directors/list.php?success=" . urlencode("Se ha eliminado correctamente el director"));
+            } else {
+                header("Location: ../../views/directors/list.php?error=" . urlencode($result));
+            }
             break;
     }
 }

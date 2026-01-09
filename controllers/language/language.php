@@ -62,8 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case "delete":
             $id = $_POST['id'] ?? '';
-            Language::deleteLanguage($id);
-            header("Location: ../../views/languages/list.php?success=" . urlencode("Se ha eliminado correctamente el idioma"));
+            $result = Language::deleteLanguage($id);
+            if ($result === "OK") {
+                header("Location: ../../views/languages/list.php?success=" . urlencode("Se ha eliminado correctamente el idioma"));
+            } else {
+                header("Location: ../../views/languages/list.php?error=" . urlencode($result));
+            }
             break;
     }
 }

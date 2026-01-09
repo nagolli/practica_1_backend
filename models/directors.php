@@ -132,8 +132,27 @@ class Director extends Template
         return Template::getAll("directors", "name, surnames");
     }
 
-    public static function deleteDirector(int $id): bool
+    private static function canDeleteDirector(int $id): bool
     {
+        self::initConnectionDb();
+        $sql = "
+            SELECT count(*) AS total
+            FROM Series
+            WHERE idDirector = {$id}
+        ";
+        $query = self::$dbConnection->query($sql);
+        if (!$query) {
+            return false; // o lanza una excepción si prefieres
+        }
+        $row = $query->fetch_assoc();
+        return ((int)$row['total'] === 0);
+    }
+
+    public static function deleteDirector(int $id): string
+    {
+        if(!Director::canDeleteDirector($id)) {
+            return "No se puede eliminar el director porque está asociado a una o más series.";
+        }
         return Template::delete("directors", $id);
     }
 }

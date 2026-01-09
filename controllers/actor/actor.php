@@ -68,8 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case "delete":
             $id = $_POST['id'] ?? '';
-            Actor::deleteActor($id);
-            header("Location: ../../views/actors/list.php?success=" . urlencode("Se ha eliminado correctamente el actor"));
-            break;
+            $result = Actor::deleteActor($id);
+            if($result === "OK") {
+                 header("Location: ../../views/actors/list.php?success=" . urlencode("Se ha eliminado correctamente el actor"));
+            } else {
+                header("Location: ../../views/actors/list.php?error=" . urlencode($result));
+            }
     }
 }

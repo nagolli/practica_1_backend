@@ -65,8 +65,27 @@ class Platform extends Template
         return Template::getAll("platforms");
     }
 
-    public static function deletePlatform(int $id): bool
+    private static function canDeletePlatform(int $id): bool
     {
+        self::initConnectionDb();
+        $sql = "
+            SELECT count(*) AS total
+            FROM Series
+            WHERE idPlatform = {$id}
+        ";
+        $query = self::$dbConnection->query($sql);
+        if (!$query) {
+            return false; // o lanza una excepción si prefieres
+        }
+        $row = $query->fetch_assoc();
+        return ((int)$row['total'] === 0);
+    }
+
+    public static function deletePlatform(int $id): string
+    {
+        if(!Platform::canDeletePlatform($id)) {
+            return "No se puede eliminar la plataforma porque está asociada a una o más series.";
+        }
         return Template::delete("platforms", $id);
     }
 }
