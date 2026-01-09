@@ -11,20 +11,14 @@ $platforms = getAllPlatforms();
 $directors = getAllDirectors();
 $actors = getAllActors();
 $languages = getAllLanguages();
+$maxWidth = 4;
 $data = [
     [
-        "title" => "Titulo",
+        "title" => "Título",
         "type" => "text",
         "currValue" => "",
         "values" => [],
         "id" => "title"
-    ],
-    [
-        "title" => "Plataforma",
-        "type" => "select",
-        "currValue" => "",
-        "values" => $platforms,
-        "id" => "idPlatform"
     ],
     [
         "title" => "Idioma original",
@@ -32,20 +26,6 @@ $data = [
         "currValue" => [],
         "values" => $languages,
         "id" => "idLanguageOriginal"
-    ],
-    [
-        "title" => "Otros idiomas de audio",
-        "type" => "multiSelect",
-        "currValue" => [],
-        "values" => $languages,
-        "id" => "idAudioLanguages"
-    ],
-    [
-        "title" => "Otros idiomas de subtitulos",
-        "type" => "multiSelect",
-        "currValue" => [],
-        "values" => $languages,
-        "id" => "idSubtitleLanguages"
     ],
     [
         "title" => "Director",
@@ -62,6 +42,27 @@ $data = [
         "id" => "idActorProtagonist"
     ],
     [
+        "title" => "Plataforma",
+        "type" => "select",
+        "currValue" => "",
+        "values" => $platforms,
+        "id" => "idPlatform"
+    ],
+    [
+        "title" => "Otros idiomas de audio",
+        "type" => "multiSelect",
+        "currValue" => [],
+        "values" => $languages,
+        "id" => "idAudioLanguages"
+    ],
+    [
+        "title" => "Otros idiomas de subtítulos",
+        "type" => "multiSelect",
+        "currValue" => [],
+        "values" => $languages,
+        "id" => "idSubtitleLanguages"
+    ],
+    [
         "title" => "Actores de reparto",
         "type" => "multiSelect",
         "currValue" => "",
@@ -73,7 +74,7 @@ $urlCancel = "list.php";
 $urlSubmit = "../../controllers/series/series.php?action=create";
 
 if (isset($_GET['error'])): ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">    
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <?= $_GET['error'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>

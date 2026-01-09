@@ -24,20 +24,14 @@ $platforms = getAllPlatforms();
 $directors = getAllDirectors();
 $actors = getAllActors();
 $languages = getAllLanguages();
+$maxWidth = 4;
 $data = [
     [
-        "title" => "Titulo",
+        "title" => "Título",
         "type" => "text",
         "currValue" => $info["title"],
         "values" => [],
         "id" => "title"
-    ],
-    [
-        "title" => "Plataforma",
-        "type" => "select",
-        "currValue" => $info["idPlatform"],
-        "values" => $platforms,
-        "id" => "idPlatform"
     ],
     [
         "title" => "Idioma original",
@@ -45,20 +39,6 @@ $data = [
         "currValue" => $info["idAudioLanguageOriginal"],
         "values" => $languages,
         "id" => "idLanguageOriginal"
-    ],
-    [
-        "title" => "Otros idiomas de audio",
-        "type" => "multiSelect",
-        "currValue" => $info["idAudioLanguages"],
-        "values" => $languages,
-        "id" => "idAudioLanguages"
-    ],
-    [
-        "title" => "Otros idiomas de subtitulos",
-        "type" => "multiSelect",
-        "currValue" => $info["idSubtitleLanguages"],
-        "values" => $languages,
-        "id" => "idSubtitleLanguages"
     ],
     [
         "title" => "Director",
@@ -75,7 +55,28 @@ $data = [
         "id" => "idActorProtagonist"
     ],
     [
-        "title" => "Actores",
+        "title" => "Plataforma",
+        "type" => "select",
+        "currValue" => $info["idPlatform"],
+        "values" => $platforms,
+        "id" => "idPlatform"
+    ],
+    [
+        "title" => "Otros idiomas de audio",
+        "type" => "multiSelect",
+        "currValue" => $info["idAudioLanguages"],
+        "values" => $languages,
+        "id" => "idAudioLanguages"
+    ],
+    [
+        "title" => "Otros idiomas de subtítulos",
+        "type" => "multiSelect",
+        "currValue" => $info["idSubtitleLanguages"],
+        "values" => $languages,
+        "id" => "idSubtitleLanguages"
+    ],
+    [
+        "title" => "Actores de reparto",
         "type" => "multiSelect",
         "currValue" => $info["idActors"],
         "values" => $actors,
